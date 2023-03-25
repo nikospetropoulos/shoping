@@ -51,7 +51,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'nikospetropoulosshoping-default'
+    environment: 'nikospetropoulosshoping'
     strategy: 
       runOnce:
         deploy:
