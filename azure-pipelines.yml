@@ -10,6 +10,13 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
+  dockerRegistryServiceConnection: "c1c97c3b-956a-46d5-8ba3-ae883f78d68f"
+  imageRepository: "shoppingapi"
+  containerRegistry: "nikostestacr.azurecr.io"
+  dockerfilePath: "**/DockerFile"
+  tags: "$(Build.BuildId)"
+  imagePullSecret: "acr-secret"
+  vmImageName: "ubuntu-latest"
 
 stages:
 - stage: Build
@@ -18,12 +25,53 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: ubuntu-latest
+      vmImage: $(vmImageName)
     steps:
     - task: Docker@2
-      displayName: Build an image
+      displayName: Build and push to image container registry 
       inputs:
-        command: build
-        dockerfile: '$(Build.SourcesDirectory)/Shopping/Shopping.API/Dockerfile'
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerFile: $(dockerfilePath)
+        #dockerfile: '$(Build.SourcesDirectory)/Shopping/Shopping.API/Dockerfile'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        buildContext: $(Build.SourcesDirectory)/Shopping
         tags: |
           $(tag)
+
+    - upload: manifets
+      artifact: manifests
+
+- stage: Deploy
+  displayName: Deploy Stage
+  dependsOn: Build
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'aspnetrundevops-default'
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+            - task: KubernetesManifest@0
+              displayName: Create Imagepull Secret
+              inputs:
+                action: createSecret
+                secretName: $(imagePullSecret)
+                dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+            - task: KubernetesManifest@0
+              displayName: Deply to Kubernetes Cluster
+              inputs:
+                action: deploy
+                manifests: 
+                  $(Pipeline.WorkSpace)/manifests/shoppingapi.yaml
+                imagePullSecrets: 
+                  $(imagePullSecret)
+                containers: 
+                  $(containerRegistry)/$(imageRepository)/$(tag)
+
+
