@@ -63,15 +63,5 @@ stages:
                 secretName: $(imagePullSecret)
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
 
-            - task: KubernetesManifest@0
-              displayName: Deply to Kubernetes Cluster
-              inputs:
-                action: deploy
-                manifests: 
-                  $(Pipeline.WorkSpace)/manifests/shoppingapi.yaml
-                imagePullSecrets: 
-                  $(imagePullSecret)
-                containers: 
-                  $(containerRegistry)/$(imageRepository)/$(tag)
 
 
