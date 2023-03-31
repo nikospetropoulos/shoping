@@ -39,6 +39,7 @@ stages:
         tags: |
           $(tag)
 
+
 - stage: Deploy
   displayName: Deploy Stage
   dependsOn: Build
