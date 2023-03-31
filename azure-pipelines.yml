@@ -10,7 +10,7 @@ resources:
 
 variables:
   tag: '$(Build.BuildId)'
-  dockerRegistryServiceConnection: "c1c97c3b-956a-46d5-8ba3-ae883f78d68f"
+  dockerRegistryServiceConnection: "72bdc578-f572-4411-9f1c-732ce58d4dba"
   imageRepository: "shoppingapi"
   containerRegistry: "nikostestacr.azurecr.io"
   dockerfilePath: "**/Dockerfile"
