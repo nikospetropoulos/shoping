@@ -39,7 +39,7 @@ stages:
         tags: |
           $(tag)
 
-    - upload: manifests
+    - upload: )/manifests/shoppingapi.yaml
       artifact: manifests
 
 - stage: Deploy
