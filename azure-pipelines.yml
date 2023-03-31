@@ -41,27 +41,3 @@ stages:
 
     - upload: manifets
       artifact: manifests
-
-- stage: Deploy
-  displayName: Deploy Stage
-  dependsOn: Build
-
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    pool:
-      vmImage: $(vmImageName)
-    environment: 'nikospetropoulosshoping'
-    strategy: 
-      runOnce:
-        deploy:
-          steps:
-            - task: KubernetesManifest@0
-              displayName: Create Imagepull Secret
-              inputs:
-                action: createSecret
-                secretName: $(imagePullSecret)
-                dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-
-
-
