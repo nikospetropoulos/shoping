@@ -36,7 +36,7 @@ namespace Shopping.API.Data
                 {
                     new Product()
                     {
-                        Name = "IPhone U",
+                        Name = "IPhone UV",
                         Description = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.",
                         ImageFile = "product-1.png",
                         Price = 1950.00M,
