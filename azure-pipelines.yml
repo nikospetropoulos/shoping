@@ -13,7 +13,7 @@ variables:
   dockerRegistryServiceConnection: "c1c97c3b-956a-46d5-8ba3-ae883f78d68f"
   imageRepository: "shoppingapi"
   containerRegistry: "nikostestacr.azurecr.io"
-  dockerfilePath: "Shopping/Shopping.API//DockerFile"
+  dockerfilePath: "Shopping.API//DockerFile"
   tags: "$(Build.BuildId)"
   imagePullSecret: "acr-secret"
   vmImageName: "ubuntu-latest"
