@@ -33,7 +33,6 @@ stages:
         command: buildAndPush
         repository: $(imageRepository)
         dockerFile: $(dockerfilePath)
-        #dockerfile: '$(Build.SourcesDirectory)/Shopping/Shopping.API/Dockerfile'
         containerRegistry: $(dockerRegistryServiceConnection)
         buildContext: $(Build.SourcesDirectory)/Shopping
         tags: |
