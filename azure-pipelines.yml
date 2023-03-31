@@ -68,6 +68,7 @@ stages:
               displayName: Deply to Kubernetes Cluster
               inputs:
                 action: deploy
+                kubernetesServiceConnection: $(kubernetesServiceConnection)
                 manifests: 
                   $(Pipeline.WorkSpace)/manifests/shoppingapi.yaml
                 imagePullSecrets: 
