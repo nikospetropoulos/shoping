@@ -13,7 +13,7 @@ variables:
   dockerRegistryServiceConnection: "c1c97c3b-956a-46d5-8ba3-ae883f78d68f"
   imageRepository: "shoppingapi"
   containerRegistry: "nikostestacr.azurecr.io"
-  dockerfilePath: '$(Build.SourcesDirectory)/Shopping/Shopping.API/Dockerfile'
+  dockerfilePath: "shoping/Shopping/Shopping.API//DockerFile"
   tags: "$(Build.BuildId)"
   imagePullSecret: "acr-secret"
   vmImageName: "ubuntu-latest"
@@ -38,4 +38,40 @@ stages:
         buildContext: $(Build.SourcesDirectory)/Shopping
         tags: |
           $(tag)
+
+    - upload: manifests
+      artifact: manifests
+
+- stage: Deploy
+  displayName: Deploy Stage
+  dependsOn: Build
+
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'nikospetropoulosshoping'
+    strategy: 
+      runOnce:
+        deploy:
+          steps:
+            - task: KubernetesManifest@0
+              displayName: Create Imagepull Secret
+              inputs:
+                action: createSecret
+                secretName: $(imagePullSecret)
+                dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+            - task: KubernetesManifest@0
+              displayName: Deply to Kubernetes Cluster
+              inputs:
+                action: deploy
+                manifests: 
+                  $(Pipeline.WorkSpace)/manifests/shoppingapi.yaml
+                imagePullSecrets: 
+                  $(imagePullSecret)
+                containers: 
+                  $(containerRegistry)/$(imageRepository)/$(tag)
+
 
