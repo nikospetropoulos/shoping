@@ -15,7 +15,7 @@ variables:
   containerRegistry: "nikostestacr.azurecr.io"
   dockerfilePath: "**/Dockerfile"
   tags: "$(Build.BuildId)"
-  imagePullSecret: "acr-secret"
+  imagePullSecret: "acr-secret-2"
   vmImageName: "ubuntu-latest"
 
 stages:
@@ -66,7 +66,6 @@ stages:
               displayName: Deply to Kubernetes Cluster
               inputs:
                 action: deploy
-                kubernetesServiceConnection: nikostestclusterconnection
                 manifests: 
                   $(Pipeline.WorkSpace)/manifests/shoppingapi.yaml
                 imagePullSecrets: 
