@@ -48,7 +48,7 @@ stages:
 
   jobs:
   - deployment: Deploy
-    displayName: Deploy
+    displayName: Deploy Job
     pool:
       vmImage: $(vmImageName)
     environment: 'nikospetropoulosshoping'
