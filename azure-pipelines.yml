@@ -17,6 +17,7 @@ variables:
   tags: "$(Build.BuildId)"
   imagePullSecret: "acr-secret-2"
   vmImageName: "ubuntu-latest"
+  kubernetesServiceConnection: "nikostestclusterconnection"
 
 stages:
 - stage: Build
@@ -50,7 +51,7 @@ stages:
     displayName: Deploy Jobs
     pool:
       vmImage: $(vmImageName)
-    environment: 'nikostestclusterconnection'
+    environment: 'nikospetropoulosshoping'
     strategy: 
       runOnce:
         deploy:
@@ -61,6 +62,7 @@ stages:
                 action: createSecret
                 secretName: $(imagePullSecret)
                 dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+                kubernetesServiceConnection: $(kubernetesServiceConnection)
 
             - task: KubernetesManifest@0
               displayName: Deply to Kubernetes Cluster
