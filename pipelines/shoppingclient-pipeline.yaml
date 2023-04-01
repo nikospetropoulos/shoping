@@ -23,6 +23,7 @@ variables:
   dockerfilePath: 'Shopping/Shopping.Client/Dockerfile'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'acr-secret-2'
+  kubernetesServiceConnection: "nikostestclusterconnection"
 
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -71,11 +72,13 @@ stages:
               action: createSecret
               secretName: $(imagePullSecret)
               dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              kubernetesServiceConnection: $(kubernetesServiceConnection)
               
           - task: KubernetesManifest@0
             displayName: Deploy to Kubernetes cluster
             inputs:
               action: deploy
+              kubernetesServiceConnection: $(kubernetesServiceConnection)
               manifests: |
                 $(Pipeline.Workspace)/aks/shoppingclient.yaml
               imagePullSecrets: |

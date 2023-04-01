@@ -62,25 +62,22 @@ stages:
       runOnce:
         deploy:
           steps:
-            - task: KubernetesManifest@0
-              displayName: Create Imagepull Secret
-              inputs:
-                action: createSecret
-                secretName: $(imagePullSecret)
-                dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
-                kubernetesServiceConnection: $(kubernetesServiceConnection)
+          - task: KubernetesManifest@0
+            displayName: Create Imagepull Secret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+              kubernetesServiceConnection: $(kubernetesServiceConnection)
 
-            - task: KubernetesManifest@0
-              displayName: Deply to Kubernetes Cluster
-              inputs:
-                action: deploy
-                kubernetesServiceConnection: $(kubernetesServiceConnection)
-                manifests: 
-                  $(Pipeline.WorkSpace)/aks/shoppingapi.yaml
-                imagePullSecrets: 
-                  $(imagePullSecret)
-                containers: 
-                  $(containerRegistry)/$(imageRepository)/$(tag)
-
-
-
+          - task: KubernetesManifest@0
+            displayName: Deply to Kubernetes Cluster
+            inputs:
+              action: deploy
+              kubernetesServiceConnection: $(kubernetesServiceConnection)
+              manifests: 
+                $(Pipeline.WorkSpace)/aks/shoppingapi.yaml
+              imagePullSecrets: 
+                $(imagePullSecret)
+              containers: 
+                $(containerRegistry)/$(imageRepository)/$(tag)
