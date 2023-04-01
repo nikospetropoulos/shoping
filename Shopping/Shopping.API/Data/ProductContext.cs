@@ -36,6 +36,14 @@ namespace Shopping.API.Data
                 {
                     new Product()
                     {
+                        Name = "PH-1",
+                        Description = "AI phone.",
+                        ImageFile = "product-2.png",
+                        Price = 1950.00M,
+                        Category = "Smart Phone"
+                    },
+                    new Product()
+                    {
                         Name = "IPhone UVA-DDD",
                         Description = "This phone is the company's biggest change to its flagship smartphone in years. It includes a borderless.",
                         ImageFile = "product-1.png",
